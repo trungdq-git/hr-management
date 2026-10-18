@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: itrms
+      POSTGRES_USER: itrms
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-itrms_local}
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U itrms -d itrms"]
+      interval: 5s
+      retries: 10
+volumes:
+  pgdata:

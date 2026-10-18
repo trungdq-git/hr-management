@@ -1,0 +1,20 @@
+import type { CatalogSkill, SkillCriterion, SkillRating } from './capability-types';
+export const scenarioLabels = { CONSERVATIVE: 'Conservative', BASE: 'Base', OPTIMISTIC: 'Optimistic' } as const;
+export type ScenarioKindKey = keyof typeof scenarioLabels;
+export type DemandSkill = { skillId: string; requiredMm: number; minProficiency: number };
+export type ForecastDemand = { id: string; month: string; demandMm: number; version: number; skills: DemandSkill[] };
+export type ForecastProject = { id: string; code: string; name: string; status: string; startDate: string; endDate: string; requirements: SkillCriterion[]; demands: ForecastDemand[] };
+export type ForecastScenarioData = { id: string; name: string; kind: ScenarioKindKey; probabilities: { projectId: string; probability: number | null; version: number }[] };
+export type ForecastEmployee = { id: string; code: string; name: string; joinDate: string; exitDate: string | null; ratings: SkillRating[]; months: { month: string; capacity: number | null }[]; efforts: { projectId: string; month: string; planned: number | null; actual: number | null }[] };
+export type ForecastInput = { months: string[]; employees: ForecastEmployee[]; projects: ForecastProject[]; skills: CatalogSkill[]; scenarios: ForecastScenarioData[] };
+export type TransferSuggestion = { employeeId: string; employeeName: string; employeeCode: string; projectId: string; projectName: string; skillId: string | null; mm: number; freeMm: number };
+export type ForecastProfileGap = { projectId: string; projectName: string; skillId: string | null; minProficiency: number; requiredSkills: SkillCriterion[]; mm: number };
+export type ForecastMonth = {
+ month: string; knownSupply: number; supply: number | null; allocated: number; actual: number; knownConfirmed: number; confirmed: number | null;
+ knownPipeline: number; pipeline: number | null; knownWeightedPipeline: number; weightedPipeline: number | null; expectedDemand: number | null; gap: number | null;
+ missingCapacity: string[]; missingDemand: string[]; missingProbability: string[]; unprofiledProjects: string[]; warnings: string[];
+ skillGap: number | null; capabilityShortfall: number | null; staffingGap: number | null; transfers: TransferSuggestion[]; profileGaps: ForecastProfileGap[];
+ recruitmentMm: number | null; nominalHires: number | null;
+};
+export type ScenarioForecast = { scenarioId: string; kind: ScenarioKindKey; months: ForecastMonth[]; peakRecruitmentMm: number | null; nominalHires: number | null };
+export type ForecastData = { months: string[]; projects: ForecastProject[]; skills: CatalogSkill[]; scenarios: ForecastScenarioData[]; outputs: ScenarioForecast[]; distribution: { projects: { name: string; value: number }[]; skills: { name: string; value: number }[] } };

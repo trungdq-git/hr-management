@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@theme inline {
+  --color-background: #f5f7fb;
+  --color-foreground: #152a47;
+  --color-primary: #16345b;
+  --color-muted-foreground: #718097;
+  --color-border: #e5eaf1;
+  --font-sans: Arial, Helvetica, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--color-background); color: var(--color-foreground); font-family: Arial, Helvetica, sans-serif; font-size: 14px; }
+button, a, input, select { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+input, select { min-height: 40px; border: 1px solid #dce3ec; border-radius: 8px; padding: 8px 12px; background: white; color: #243c59; font-size: 13px; max-width: 100%; }
+input:focus, select:focus { outline: 2px solid #fb923c; outline-offset: 1px; }
+label { font-size: 12px; font-weight: 600; color: #586b83; }
+table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+th { background: #f8fafc; color: #7b889b; font-size: 10px; letter-spacing: .055em; text-transform: uppercase; font-weight: 600; padding: 14px 18px; border-block: 1px solid #edf0f5; }
+td { padding: 15px 18px; border-bottom: 1px solid #edf0f5; font-size: 12px; }
+tbody tr:hover { background: #fafbfe; }
+.panel { border: 1px solid #e5eaf1; background: white; border-radius: 12px; box-shadow: 0 2px 4px #142b4803; }
+.eyebrow { font-size: 10px; letter-spacing: .13em; font-weight: 700; text-transform: uppercase; color: #94a0b1; }
+.field { display: flex; flex-direction: column; gap: 7px; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; font-size: 10px; font-weight: 600; border-radius: 5px; background: #edf3fc; color: #446792; }
+.badge-ACTIVE { color: #228167; background: #eaf7f1; }
+.badge-PIPELINE, .badge-PROBATION { color: #b37a1d; background: #fff5df; }
+.badge-CANCELLED, .badge-RESIGNED { color: #b24e57; background: #fceef0; }
+.badge-COMPLETED, .badge-ON_LEAVE { color: #748096; background: #edf0f5; }
+dialog { border: 1px solid #dce3ec; border-radius: 16px; padding: 0; max-height: 90vh; width: min(650px, 94vw); color: #152a47; margin: auto; }
+dialog::backdrop { background: #102b4c80; backdrop-filter: blur(3px); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

@@ -1,0 +1,12 @@
+export const skillCategories = { LANGUAGE: 'Ngôn ngữ lập trình', FRAMEWORK: 'Framework', CLOUD: 'Cloud', DATABASE: 'Cơ sở dữ liệu', TESTING: 'Kiểm thử', AI_TOOLS: 'Công cụ AI', MANAGEMENT: 'Quản lý dự án', JAPANESE: 'Giao tiếp tiếng Nhật' } as const;
+export type SkillCategoryKey = keyof typeof skillCategories;
+export type CatalogSkill = { id: string; name: string; category: SkillCategoryKey; active: boolean; version: number };
+export type SkillRating = { skillId: string; proficiency: number; active: boolean; version: number };
+export type CapabilityEmployee = { id: string; code: string; name: string; position: string; location: string; level: number; jlpt: string; status: string; joinDate: string; exitDate: string | null; capacity: number | null; available: number | null; allocated: number; ratings: SkillRating[] };
+export type SkillRequirement = { skillId: string; minProficiency: number; requiredMm: number; active: boolean; version: number };
+export type CapabilityProject = { id: string; code: string; name: string; customer: string; status: string; startDate: string; endDate: string; requirements: SkillRequirement[] };
+export type CapabilityData = { month: string; skills: CatalogSkill[]; employees: CapabilityEmployee[]; projects: CapabilityProject[] };
+export type SkillCriterion = { skillId: string; minProficiency: number };
+export type ResourceFilters = { month: string; query: string; position: string; location: string; minLevel: number; maxLevel: number; jlpt: string; mode: 'ALL' | 'ANY'; skills: SkillCriterion[]; availability: 'AVAILABLE' | 'KNOWN' | 'ANY'; minAvailableMm: number; projectId?: string };
+export type ResourceMatch = { employee: CapabilityEmployee; manualMatched: number; manualTotal: number; projectMatched: number; projectTotal: number };
+export type ResourceSearchResult = { month: string; matches: ResourceMatch[]; project: CapabilityProject | null; projectRequirements: SkillCriterion[]; missingProjectRequirements: boolean };

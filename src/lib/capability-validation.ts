@@ -1,0 +1,11 @@
+import { z } from 'zod';
+import { monthSchema } from './planning-validation';
+z.config(z.locales.vi());
+const id = z.string().min(1).max(100);
+const version = z.number().int().positive().nullable();
+const proficiency = z.number().int().min(1).max(5);
+const mm = z.number().finite().min(0).max(99999999.9999).refine(v => Math.abs(v * 10000 - Math.round(v * 10000)) < 0.00001, 'Tối đa 4 chữ số thập phân');
+export const skillSchema = z.object({ id: id.optional(), name: z.string().transform(s => s.trim().replace(/\s+/g, ' ')).pipe(z.string().min(1).max(100)), category: z.enum(['LANGUAGE','FRAMEWORK','CLOUD','DATABASE','TESTING','AI_TOOLS','MANAGEMENT','JAPANESE']), active: z.boolean(), expectedVersion: version }).refine(v => v.id ? v.expectedVersion !== null : v.expectedVersion === null, 'Phiên bản không hợp lệ');
+export const ratingSchema = z.object({ employeeId: id, skillId: id, proficiency, active: z.boolean(), expectedVersion: version });
+export const requirementSchema = z.object({ projectId: id, skillId: id, minProficiency: proficiency, requiredMm: mm, active: z.boolean(), expectedVersion: version });
+export const resourceFilterSchema = z.object({ month: monthSchema, query: z.string().trim().max(150), position: z.enum(['','PM','BrSE','TL','Developer','Tester']), location: z.enum(['','ONSITE','OFFSHORE']), minLevel: z.number().int().min(1).max(6), maxLevel: z.number().int().min(1).max(6), jlpt: z.enum(['ANY','NONE','N1','N2','N3','N4','N5']), mode: z.enum(['ALL','ANY']), skills: z.array(z.object({ skillId: id, minProficiency: proficiency })).max(30), availability: z.enum(['AVAILABLE','KNOWN','ANY']), minAvailableMm: mm, projectId: id.optional() }).refine(v => v.minLevel <= v.maxLevel, 'Level tối thiểu phải nhỏ hơn hoặc bằng tối đa').refine(v => new Set(v.skills.map(s => s.skillId)).size === v.skills.length, 'Không lặp kỹ năng trong bộ lọc');
